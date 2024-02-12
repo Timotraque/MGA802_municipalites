@@ -3,9 +3,9 @@
 import pandas as pd
 import numpy as np
 
-df = pd.read_csv("Census_2016_2021.csv")
+df1 = pd.read_csv("Census_2016_2021.csv")
 
-df_municipalites = df[df['Type'].str.contains("MÉ")]
+df_municipalites = df1[df1['Type'].str.contains("MÉ")]
 
 nbr_municipalites = df_municipalites['Nom'].count()
 print(f"Le nombre de municipalités au Québec est : {nbr_municipalites}")
