@@ -14,7 +14,6 @@ print(f"Le nombre de municipalités au Québec est : {nbr_municipalites}")
 # Calcul de la population moyenne et création du DataFrame moy_population
 moy_population = pd.concat([df_municipalites['Nom'],(df_municipalites['Pop21'] + df_municipalites['Pop16'])/2], axis=1)
 moy_population.rename({0: "Moyenne pop"}, axis="columns", inplace=True)
-print(moy_population)
 
 # Calcul du pourcentage d'accroissement
 moy_population["Acroissement"] = (df_municipalites['Pop21'] - df_municipalites['Pop16']) / moy_population["Moyenne pop"]
