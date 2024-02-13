@@ -3,6 +3,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
+# Lecture des données et création du DataFrame municipalités en filtrant les ME
 df = pd.read_csv("Census_2016_2021.csv")
 
 df_municipalites = df[df['Type'].str.contains("MÉ")]
@@ -10,14 +11,14 @@ df_municipalites = df[df['Type'].str.contains("MÉ")]
 nbr_municipalites = df_municipalites['Nom'].count()
 print(f"Le nombre de municipalités au Québec est : {nbr_municipalites}")
 
+# Calcul de la population moyenne et création du DataFrame moy_population
 moy_population = pd.concat([df_municipalites['Nom'],(df_municipalites['Pop21'] + df_municipalites['Pop16'])/2], axis=1)
 moy_population.rename({0: "Moyenne pop"}, axis="columns", inplace=True)
-
 
 # Calcul du pourcentage d'accroissement
 moy_population["Acroissement"] = (df_municipalites['Pop21'] - df_municipalites['Pop16']) / moy_population["Moyenne pop"]
 
-# Affichage
+# Affichage de l'évolution de la population
 
 plt.rcParams['font.size'] = 12
 plt.rcParams['figure.autolayout'] = True
@@ -32,9 +33,9 @@ plt.grid()
 plt.show()
 
 # Classement des municipalités
-
+# Création de multiples Series avec des filtres sur la population
 df_2000 = moy_population["Nom"][moy_population["Moyenne pop"] < 2000]
-df_2000.index = range(0, len(df_2000))
+df_2000.index = range(0, len(df_2000))                                  # Chaque index est remis à 0 pour normaliser le DF
 df_9999 = moy_population["Nom"][(moy_population["Moyenne pop"] > 1999) & (moy_population["Moyenne pop"] < 10000)]
 df_9999.index = range(0, len(df_9999))
 df_24999 = moy_population["Nom"][(moy_population["Moyenne pop"] > 9999) & (moy_population["Moyenne pop"] < 25000)]
@@ -44,14 +45,13 @@ df_99999.index = range(0, len(df_99999))
 df_100000 = moy_population["Nom"][(moy_population["Moyenne pop"] > 9999)]
 df_100000.index = range(0, len(df_100000))
 
-
+# Création du DataFrame df_classement
 df_classement = {"<2000": df_2000,
                  "2000 - 9999": df_9999,
                  "10000 - 24999": df_24999,
                  "25000 - 99999": df_99999,
                  ">100000": df_100000}
 df_classement = pd.DataFrame(df_classement)
-
 
 # Affichage de la répartition des communes en fonction de leur population
 
@@ -65,6 +65,4 @@ plt.xlabel('Nombre de communes')
 plt.ylabel('Taille des communes')
 plt.title("Taille des municipalités du Québec")
 plt.show()
-
-
 
